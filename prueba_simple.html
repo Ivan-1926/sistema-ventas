@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba Simple</title>
+</head>
+<body>
+    <h2>Prueba de guardar_venta.php</h2>
+    
+    <form id="testForm">
+        <input type="text" id="cliente" placeholder="Cliente" value="Juan">
+        <input type="text" id="producto" placeholder="Producto" value="Laptop">
+        <input type="number" id="cantidad" value="2">
+        <input type="number" id="precio" value="500">
+        <button type="submit">Enviar</button>
+    </form>
+    
+    <pre id="resultado"></pre>
+    
+    <script>
+        document.getElementById('testForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new URLSearchParams();
+            formData.append('cliente', document.getElementById('cliente').value);
+            formData.append('producto', document.getElementById('producto').value);
+            formData.append('cantidad', document.getElementById('cantidad').value);
+            formData.append('precio_unitario', document.getElementById('precio').value);
+            formData.append('total', document.getElementById('cantidad').value * document.getElementById('precio').value);
+            
+            try {
+                const response = await fetch('guardar_venta.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: formData
+                });
+                const text = await response.text();
+                document.getElementById('resultado').textContent = text;
+            } catch (error) {
+                document.getElementById('resultado').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
